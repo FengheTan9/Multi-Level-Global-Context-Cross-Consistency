@@ -17,9 +17,13 @@ Medical image segmentation is a critical step in computer-aided diagnosis, and c
 
 #### **Generation results**
 
-**BUSI Result:**                                  **TUS Result:**
+**BUSI Result:**
 
-<img src="imgs/gen_bus.png" alt="gen_bus" style="zoom: 7%;" />  <img src="imgs/gen_tus.png" alt="gen_tus" style="zoom:7%;" />
+<img src="imgs/gen_bus.png">  
+
+**TUS Result:**
+
+<img src="imgs/gen_tus.png"/>
 
 
 
@@ -60,7 +64,7 @@ Please put the [BUSI](https://www.kaggle.com/aryashah2k/breast-ultrasound-images
 
 - Generate Stage:
 
-  You can follow this [work]([mueller-franzes/medfusion: Implementation of Medfusion - A latent diffusion model for medical image synthesis. (github.com)](https://github.com/mueller-franzes/medfusion))
+  You can follow this [work](https://github.com/mueller-franzes/medfusion).
 
 - Semi-supervised Learning Stage:
 
@@ -78,7 +82,7 @@ Please put the [BUSI](https://www.kaggle.com/aryashah2k/breast-ultrasound-images
 
 ## Acknowledgements:
 
-This code-base uses helper functions from [CMU-Net]([FengheTan9/CMU-Net: a pytorch implement of CMU-Net (github.com)](https://github.com/FengheTan9/CMU-Net)) and [SSL4MIS](https://github.com/HiLab-git/SSL4MIS).
+This code-base uses helper functions from [CMU-Net](https://github.com/FengheTan9/CMU-Net) and [SSL4MIS](https://github.com/HiLab-git/SSL4MIS).
 
 ## Citation
 
