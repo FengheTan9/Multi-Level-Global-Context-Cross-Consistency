@@ -41,9 +41,9 @@ class SemiDataSets(Dataset):
 
         case = self.sample_list[idx]
 
-        image = cv2.imread(os.path.join(self._base_dir, 'label', 'images', case + '.png'))
+        image = cv2.imread(os.path.join(self._base_dir, 'images', case + '.png'))
         label = \
-        cv2.imread(os.path.join(self._base_dir, 'label', 'masks', '0', case + '.png'), cv2.IMREAD_GRAYSCALE)[
+        cv2.imread(os.path.join(self._base_dir, 'masks', '0', case + '.png'), cv2.IMREAD_GRAYSCALE)[
             ..., None]
 
         augmented = self.transform(image=image, mask=label)
