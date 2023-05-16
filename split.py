@@ -1,5 +1,4 @@
 import os
-import random
 from glob import glob
 from sklearn.model_selection import train_test_split
 
@@ -12,8 +11,8 @@ img_ids = [os.path.splitext(os.path.basename(p))[0] for p in img_ids]
 
 
 count = 1
-for i in range(3):
-    train_img_ids, val_img_ids = train_test_split(img_ids, test_size=0.3, random_state=random.randint(0, 25536))
+for i in [41, 64, 1337]:
+    train_img_ids, val_img_ids = train_test_split(img_ids, test_size=0.3, random_state=i)
     filename = root + '/{}_train{}.txt'.format(name, count)
     with open(filename, 'w') as file:
         for i in train_img_ids:

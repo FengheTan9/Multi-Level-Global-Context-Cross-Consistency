@@ -30,20 +30,18 @@ def seed_torch(seed):
     os.environ['PYTHONHASHSEED'] = str(seed)
 
 
-seed_torch(41)
-
 parser = argparse.ArgumentParser()
 parser.add_argument('--semi_percent', type=float, default=0.5)
-parser.add_argument('--diff_dir', type=str, default="", help='dir')
 parser.add_argument('--base_dir', type=str, default="./data/busi", help='dir')
-parser.add_argument('--train_file_dir', type=str, default="semi_train3.txt", help='dir')
-parser.add_argument('--val_file_dir', type=str, default="semi_val3.txt", help='dir')
+parser.add_argument('--train_file_dir', type=str, default="busi_train1.txt", help='dir')
+parser.add_argument('--val_file_dir', type=str, default="busi_val1.txt", help='dir')
 parser.add_argument('--max_iterations', type=int,
                     default=40000, help='maximum epoch number to train')
 parser.add_argument('--total_batch_size', type=int, default=8,
                     help='batch_size per gpu')
 parser.add_argument('--base_lr', type=float, default=0.01,
                     help='segmentation network learning rate')
+parser.add_argument('--seed', type=int, default=41, help='random seed')
 # label and unlabel
 parser.add_argument('--labeled_bs', type=int, default=4,
                     help='labeled_batch_size per gpu')
@@ -59,6 +57,8 @@ parser.add_argument('--length', type=tuple,
                     default=(3, 3, 3), help='length of ConvMixer')
 args = parser.parse_args()
 
+seed_torch(args.seed)
+
 
 def getDataloader(args):
     train_transform = Compose([
@@ -72,12 +72,13 @@ def getDataloader(args):
         transforms.Normalize(),
     ])
     labeled_slice = args.semi_percent
-    db_train = SemiDataSets(base_dir=args.base_dir, split="train",  transform=train_transform,
+    db_train = SemiDataSets(base_dir=args.base_dir, split="train", transform=train_transform,
                             train_file_dir=args.train_file_dir, val_file_dir=args.val_file_dir,
                             )
     db_val = SemiDataSets(base_dir=args.base_dir, split="val", transform=val_transform,
                           train_file_dir=args.train_file_dir, val_file_dir=args.val_file_dir
                           )
+
     def worker_init_fn(worker_id):
         random.seed(args.seed + worker_id)
 
@@ -97,13 +98,14 @@ def get_current_consistency_weight(epoch):
     # Consistency ramp-up from https://arxiv.org/abs/1610.02242
     return args.consistency * ramps.sigmoid_rampup(epoch, args.consistency_rampup)
 
+
 def getModel(args):
     print("ConvMixer1:{}, ConvMixer2:{}, ConvMixer3:{}, kernal:{}".format(args.length[0], args.length[1],
                                                                           args.length[2], args.kernel_size))
     return MGCC(length=args.length, k=args.kernel_size).cuda()
 
-def train(args):
 
+def train(args):
     base_lr = args.base_lr
     max_iterations = int(args.max_iterations * args.semi_percent)
     trainloader, valloader = getDataloader(args)
@@ -138,25 +140,19 @@ def train(args):
 
             outputs, outputs_aux1, outputs_aux2, outputs_aux3 = model(volume_batch)
 
-            if args.use_sigmoid:
-                outputs_soft = torch.sigmoid(outputs)
-                outputs_aux1_soft = torch.sigmoid(outputs_aux1)
-                outputs_aux2_soft = torch.sigmoid(outputs_aux2)
-                outputs_aux3_soft = torch.sigmoid(outputs_aux3)
-            else:
-                outputs_soft = outputs
-                outputs_aux1_soft = outputs_aux1
-                outputs_aux2_soft = outputs_aux2
-                outputs_aux3_soft = outputs_aux3
+            outputs_soft = torch.sigmoid(outputs)
+            outputs_aux1_soft = torch.sigmoid(outputs_aux1)
+            outputs_aux2_soft = torch.sigmoid(outputs_aux2)
+            outputs_aux3_soft = torch.sigmoid(outputs_aux3)
 
             loss_ce = criterion(outputs[:args.labeled_bs],
-                              label_batch[:args.labeled_bs][:])
+                                label_batch[:args.labeled_bs][:])
             loss_ce_aux1 = criterion(outputs_aux1[:args.labeled_bs],
-                                   label_batch[:args.labeled_bs][:])
+                                     label_batch[:args.labeled_bs][:])
             loss_ce_aux2 = criterion(outputs_aux2[:args.labeled_bs],
-                                   label_batch[:args.labeled_bs][:])
+                                     label_batch[:args.labeled_bs][:])
             loss_ce_aux3 = criterion(outputs_aux3[:args.labeled_bs],
-                                   label_batch[:args.labeled_bs][:])
+                                     label_batch[:args.labeled_bs][:])
 
             supervised_loss = (loss_ce + loss_ce_aux1 + loss_ce_aux2 + loss_ce_aux3) / 4
 

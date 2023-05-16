@@ -140,7 +140,6 @@ class Decoder(nn.Module):
 
     def __init__(self, dim_mult=4, with_masg=True):
         super(Decoder, self).__init__()
-        print(with_masg)
         self.with_masg = with_masg
         self.Up5 = up_conv(ch_in=256 * dim_mult, ch_out=128 * dim_mult)
         self.Up_conv5 = conv_block(ch_in=128 * 2 * dim_mult, ch_out=128 * dim_mult)
@@ -235,7 +234,7 @@ class MGCC(nn.Module):
 
         # FeatureNoise
         feature = [x1, x2, x3, x4, x5]
-        aux1_feature = [FeatureNoise()(i) for i in feature]
+        aux1_feature = [FeatureDropout(i) for i in feature]
         aux_seg1 = self.aux_decoder1(aux1_feature)
 
         x5 = self.ConvMixer1(x5)
@@ -245,7 +244,7 @@ class MGCC(nn.Module):
 
         x5 = self.ConvMixer2(x5)
         feature = [x1, x2, x3, x4, x5]
-        aux3_feature = [FeatureDropout(i) for i in feature]
+        aux3_feature = [FeatureNoise()(i) for i in feature]
         aux_seg3 = self.aux_decoder3(aux3_feature)
 
         # main decoder

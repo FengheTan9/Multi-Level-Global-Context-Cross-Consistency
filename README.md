@@ -1,6 +1,6 @@
 # Multi-Level Global Context Cross Consistency Model for Semi-Supervised Ultrasound Image Segmentation with Diffusion Model
 
-[Paper](https://arxiv.org/abs/2210.13012) | [Code]([FengheTan9/Multi-Level_Global_Context_Cross_Consistency (github.com)](https://github.com/FengheTan9/Multi-Level_Global_Context_Cross_Consistency))
+[Paper](https://arxiv.org/abs/2210.13012) | [Code](https://github.com/FengheTan9/Multi-Level_Global_Context_Cross_Consistency)
 
 a Pytorch code base for [Multi-Level Global Context Cross Consistency Model for Semi-Supervised Ultrasound Image Segmentation with Diffusion Model](https://arxiv.org/abs/2210.13012)
 
@@ -15,15 +15,11 @@ Medical image segmentation is a critical step in computer-aided diagnosis, and c
 
 ![mgcc](imgs/MGCC.png)
 
-#### **Generation result**
+#### **Generation results**
 
-**BUSI Result:**
+**BUSI Result:**                                  **TUS Result:**
 
-![gen_bus](imgs/gen_bus.png)
-
-**TUS Result:**
-
-![gen_tus](imgs/gen_tus.png)
+<img src="imgs/gen_bus.png" alt="gen_bus" style="zoom: 7%;" />  <img src="imgs/gen_tus.png" alt="gen_tus" style="zoom:7%;" />
 
 
 
