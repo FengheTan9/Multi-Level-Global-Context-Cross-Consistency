@@ -1,4 +1,4 @@
-# Multi-Level Global Context Cross Consistency Model for Semi-Supervised Ultrasound Image Segmentation with Diffusion Model
+# Multi-Level Global Context Cross Consistency for Semi-Supervised Ultrasound Image Segmentation with Diffusion Model
 
 [Paper](https://arxiv.org/abs/2210.13012) | [Code](https://github.com/FengheTan9/Multi-Level_Global_Context_Cross_Consistency)
 
@@ -78,7 +78,7 @@ Please put the [BUSI](https://www.kaggle.com/aryashah2k/breast-ultrasound-images
    You can first spilt your dataset:
 
    ```python
-   python spilt.py
+   python split.py
    ```
 
    Then, training your dataset:
@@ -96,9 +96,9 @@ This code-base uses helper functions from [CMU-Net](https://github.com/FengheTan
 If you use our code, please cite our paper:
 
 ```tex
-@article{tang2023multilevel,
+@article{tang2023multi,
   title={Multi-Level Global Context Cross Consistency Model for Semi-Supervised Ultrasound Image Segmentation with Diffusion Model},
-  author={Fenghe Tang and Jianrui Ding and Lingtao Wang and Min Xian and Chunping Ning},
+  author={Tang, Fenghe and Ding, Jianrui and Wang, Lingtao and Xian, Min and Ning, Chunping},
   journal={arXiv preprint arXiv:2305.09447},
   year={2023}
 }
